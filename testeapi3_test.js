@@ -1,11 +1,24 @@
-import {
-assertMatch
-} from "http://deno.land/std/testing/asserts.ts"
+import { assertThrows } from "https://deno.land/std@0.145.0/testing/asserts.ts";
 
-Deno.test("Test Assert Match", () => {
-  assertMatch("abcdefghi", new RegExp("def"));
+Deno.test("doesThrow", function (): void {
+  assertThrows((): void => {
+    throw new TypeError("hello world!");
+  });
+  assertThrows((): void => {
+    throw new TypeError("hello world!");
+  }, TypeError);
+  assertThrows(
+    (): void => {
+      throw new TypeError("hello world!");
+    },
+    TypeError,
+    "hello",
+  );
+});
 
-  const basicUrl = new RegExp("^https?://[a-z.]+.com$");
-  assertMatch("https://www.google.com", basicUrl);
-  assertMatch("http://facebook.com", basicUrl);
+// This test will not pass.
+Deno.test("fails", function (): void {
+  assertThrows((): void => {
+    console.log("Hello world");
+  });
 });
